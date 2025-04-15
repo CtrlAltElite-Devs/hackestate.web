@@ -40,6 +40,7 @@ export default function ChatInterface() {
   }
 
   const renderMessageContent = (content: string) => {
+    if (content.length <= 0) return;
     const parsedArray = extractJSONArray(content)
     if (parsedArray) {
       // Determine how many columns we want based on item count (max 3)
@@ -63,7 +64,9 @@ export default function ChatInterface() {
       )
     }
     
-    // if (!content.length) return; 
+    // // if (!content.length) return;   
+    // const contentToDisplayed = parseMarkdown(content) ? parseMarkdown(content) : "No Results Found"
+
     return <Markdown>{parseMarkdown(content)}</Markdown>
   }
 
@@ -89,41 +92,43 @@ export default function ChatInterface() {
           </div>
         )}
 
-        {/* All Messages */}
-        {messages.map((msg) => {
-          const isUser = msg.role === "user"
+{messages.length > 0 && messages.map((msg) => {
+  if (!msg.content?.trim()) return null; // Skip empty or whitespace-only content
 
-          return (
-            <div key={msg.id} className={`flex w-full ${isUser ? "justify-end" : "justify-start"} gap-2 sm:gap-4`}>
-              {!isUser && (
-                <div className="flex-shrink-0">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-medium text-sm sm:text-base">
-                    AI
-                  </div>
-                </div>
-              )}
+  const isUser = msg.role === "user";
 
-              <div
-                className={`max-w-[85%] rounded-xl px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-sm shadow-sm
-                  ${isUser ? "bg-primary text-primary-foreground" : "bg-card text-card-foreground"}`}
-              >
-                {isUser ? (
-                  <p className="leading-relaxed break-words whitespace-pre-wrap">{msg.content}</p>
-                ) : (
-                  <div className="prose prose-sm dark:prose-invert max-w-none">{renderMessageContent(msg.content)}</div>
-                )}
-              </div>
+  return (
+    <div key={msg.id} className={`flex w-full ${isUser ? "justify-end" : "justify-start"} gap-2 sm:gap-4`}>
+      {!isUser && (
+        <div className="flex-shrink-0">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-medium text-sm sm:text-base">
+            AI
+          </div>
+        </div>
+      )}
 
-              {isUser && (
-                <div className="flex-shrink-0">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-muted text-muted-foreground flex items-center justify-center font-medium text-sm sm:text-base">
-                    JD
-                  </div>
-                </div>
-              )}
-            </div>
-          )
-        })}
+      <div
+        className={`max-w-[85%] rounded-xl px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-sm shadow-sm
+          ${isUser ? "bg-primary text-primary-foreground" : "bg-card text-card-foreground"}`}
+      >
+        {isUser ? (
+          <p className="leading-relaxed break-words whitespace-pre-wrap">{msg.content}</p>
+        ) : (
+          <div className="prose prose-sm dark:prose-invert max-w-none">{renderMessageContent(msg.content)}</div>
+        )}
+      </div>
+
+      {isUser && (
+        <div className="flex-shrink-0">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-muted text-muted-foreground flex items-center justify-center font-medium text-sm sm:text-base">
+            JD
+          </div>
+        </div>
+      )}
+    </div>
+  );
+})}
+
 
         {/* Loading indicator */}
         {isLoading && (
