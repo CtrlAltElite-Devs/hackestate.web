@@ -8,7 +8,7 @@ export const api = Axios.create({
 })
 
 export const apiExpress = Axios.create({
-  baseURL: "https://1cz2hd3b-3000.asse.devtunnels.ms",
+  baseURL: "https://hackestate-api.onrender.com",
   withCredentials: true
 })
 
