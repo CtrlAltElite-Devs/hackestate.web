@@ -17,7 +17,9 @@ export const LayoutHeader = () => {
 
   const navLinks = [
     { name: "Home", path: "/" },
+    { name: "Chat", path: "/chat" },
     { name: "Properties", path: "/properties" },
+    { name: "Agents", path: "/agents" },
     { name: "Events", path: "/events" },
   ]
 

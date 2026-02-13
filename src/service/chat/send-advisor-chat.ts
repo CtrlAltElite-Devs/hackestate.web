@@ -3,12 +3,12 @@ import { openai } from "@/lib/openai";
 import { z } from "zod";
 
 export const sendAdviserChatSchema = z.object({
-    query: z.string()
+    input: z.string()
 })
 
-export type sendAdviserChatSchema = z.infer<typeof sendAdviserChatSchema>;
+export type SendAdviserChatSchema = z.infer<typeof sendAdviserChatSchema>;
 
-const sendAdviserChat = async (data: sendAdviserChatSchema): Promise<string> => {
+const sendAdviserChat = async (data: SendAdviserChatSchema): Promise<string> => {
   const response = await openai.chat.completions.create({
     model: "gpt-4o-mini",
     messages: [
@@ -20,7 +20,7 @@ const sendAdviserChat = async (data: sendAdviserChatSchema): Promise<string> => 
       },
       {
         role: "user",
-        content: data.query
+        content: data.input
       }
     ],
     temperature: 0.7,

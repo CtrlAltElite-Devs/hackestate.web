@@ -63,10 +63,10 @@ export function useChat() {
                 Type: ${prop.type ?? "N/A"}
                 Area: ${prop.area_sqm ? `${prop.area_sqm} sqm` : "N/A"}
                 Amenities: ${amenitiesList}`;
-                            })
-                            .join("\n\n");
+            })
+            .join("\n\n");
 
-                          query = `
+          query = `
                 ${propertyContext}
 
                 User query: ${content}
@@ -80,7 +80,7 @@ export function useChat() {
                 `.trim();
         }
 
-        const response = await mutation.mutateAsync({ query });
+        const response = await mutation.mutateAsync({ input: query });
 
         const responseContent = JSON.stringify(response); // Optionally format this better
 

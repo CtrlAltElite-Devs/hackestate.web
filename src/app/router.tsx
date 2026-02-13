@@ -5,7 +5,6 @@ import Login from "./pages/auth/login";
 import AuthRoot from "./pages/auth/root";
 import Signup from "./pages/auth/signup";
 import AppRoot from "./pages/root";
-import Dashboard from "./pages/dashboard/page";
 import AiChat from "./pages/ai/ai-chat";
 import { Properties } from "./pages/properties/page";
 import { Events } from "./pages/events/page";
@@ -16,66 +15,61 @@ import Agents from "./pages/agents/page";
 
 
 const createAppRouter = () =>
-    createBrowserRouter([
-        {
-            path: "/auth",
-            element: <AuthRoot />,
+  createBrowserRouter([
+    {
+      path: "/auth",
+      element: <AuthRoot />,
 
-            children: [
-                {
-                    index: true,
-                    path: "login",
-                    element: <Login />
-                },
-                {
-                    path: "signup",
-                    element: <Signup />
-                },
-            ]
+      children: [
+        {
+          index: true,
+          path: "login",
+          element: <Login />
         },
         {
-            path: "/",
-            element: <AppRoot />,
+          path: "signup",
+          element: <Signup />
+        },
+      ]
+    },
+    {
+      path: "/",
+      element: <AppRoot />,
 
-            children: [
-                {
-                    index: true,
-                    element: <Home />
-                },
-                {
-                  path: "/dashboard",
-                  index: true,
-                  element: <Dashboard />
-                },
-                {
-                    path: "/chat",
-                    index: true,
-                    element: <AiChat />
-                },
-                {
-                    path:'/properties',
-                    element: <Properties />
-                },
-                {
-                    path: '/events',
-                    element: <Events />
-                },
-                {
-                    path:'/properties/details',
-                    element: <PropertyDetails />
-                },
-                {
-                    path: '/agents',
-                    element: <Agents />
-                }
-            ]
+      children: [
+        {
+          index: true,
+          element: <Home />
+        },
+        {
+          path: "/chat",
+          index: true,
+          element: <AiChat />
+        },
+        {
+          path: '/properties',
+          element: <Properties />
+        },
+        {
+          path: '/events',
+          element: <Events />
+        },
+        {
+          path: '/properties/details',
+          element: <PropertyDetails />
+        },
+        {
+          path: '/agents',
+          element: <Agents />
         }
-    ])
+      ]
+    }
+  ])
 
 
 export const AppRouter = () => {
-    const router = useMemo(() => createAppRouter(), []);
+  const router = useMemo(() => createAppRouter(), []);
 
 
-    return <RouterProvider  router={router}/>
+  return <RouterProvider router={router} />
 }

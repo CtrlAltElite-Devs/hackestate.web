@@ -22,7 +22,7 @@ import {
 } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Progress } from "@/components/ui/progress"
-import { personas } from "@/data/personas"
+import { Spinner } from "@/components/ui/spinner"
 
 export interface BuyerPersona {
   verdict: "High Potential" | "Medium Potential" | "Low Potential" | "Not a Buyer"
@@ -52,12 +52,12 @@ export type Persona = {
 export default function Agents() {
   const [selectedPersonaId, setSelectedPersonaId] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState("")
-  const { data: personaList = [] } = useGetPersonas()
+  const { data: personaList = [], isLoading } = useGetPersonas()
 
   console.log(`personas from api: ${JSON.stringify(personaList, null, 2)}`)
 
-  // Use personaList if available, otherwise use the sample data
-  const allPersonas = personaList.length > 0 ? personaList : personas
+  // Use personaList
+  const allPersonas = personaList
 
   // Filter personas based on search query
   const filteredPersonas = allPersonas.filter(
@@ -192,7 +192,12 @@ export default function Agents() {
           </div>
 
           <div className="flex-1 overflow-y-auto">
-            {filteredPersonas.length === 0 ? (
+            {isLoading ? (
+              <div className="flex flex-col items-center justify-center h-64 gap-2">
+                <Spinner size="medium" />
+                <p className="text-sm text-muted-foreground">Loading leads...</p>
+              </div>
+            ) : filteredPersonas.length === 0 ? (
               <div className="p-8 text-center text-muted-foreground">No leads found</div>
             ) : (
               filteredPersonas.map((persona) => {
