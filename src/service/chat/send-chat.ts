@@ -1,4 +1,3 @@
-// import { api } from "@/lib/axios";
 import { apiExpress } from "@/lib/axios";
 import { Property } from "@/types/shared";
 import { useMutation } from "@tanstack/react-query";

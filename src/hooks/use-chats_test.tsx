@@ -4,6 +4,7 @@ import { ChatMessage } from "@/types/shared";
 import { useSendChat } from "@/service/chat/send-chat";
 import { usePropertyContext } from "@/providers/property";
 import { useSendAdviserChat } from "@/service/chat/send-advisor-chat";
+import { toast } from "@/hooks/use-toast";
 
 export function useChat() {
   // const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -93,6 +94,19 @@ export function useChat() {
 
         setIsLoading(false);
       } catch (err) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const error = err as any;
+        const status = error?.response?.status;
+        const errorName = error?.response?.data?.name;
+        const errorMessage = error?.response?.data?.message;
+
+        if (status === 429 || errorName === "TooManyRequestsError") {
+          toast({
+            title: "AI quota exceeded",
+            description: errorMessage ?? "Daily AI quota exceeded",
+          });
+        }
+
         setError("Failed to send message");
         setIsLoading(false);
         console.error("Chat error:", err);
