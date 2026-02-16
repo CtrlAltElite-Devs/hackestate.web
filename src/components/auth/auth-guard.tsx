@@ -9,7 +9,7 @@ interface AuthGuardProp {
 }
 
 export default function AuthGuard({ children, navigateTo }: PropsWithChildren<AuthGuardProp>) {
-  const { data, error, isLoading} = useGetCurrentUser();
+  const { data, error, isLoading } = useGetCurrentUser();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -17,20 +17,20 @@ export default function AuthGuard({ children, navigateTo }: PropsWithChildren<Au
     if (isLoading) return;
 
     if (data) {
-        console.log(`API RESPONSE: ${data}`);
-        dispatch(loginUser({
-          admin: data.admin,
-          token:data.token
-        }));
+      console.log(`API RESPONSE: ${data}`);
+      dispatch(loginUser({
+        user: data.user,
+        token: data.token
+      }));
     }
 
     if (error) {
-        console.log("failed to get me, redirecting to login: ", error);
-        // if(!navigateTo.includes('auth')){
-        // }
-        navigate(navigateTo);
+      console.log("failed to get me, redirecting to login: ", error);
+      // if(!navigateTo.includes('auth')){
+      // }
+      navigate(navigateTo);
     } else {
-        navigate(navigateTo);
+      navigate(navigateTo);
     }
 
   }, [data, dispatch, error, isLoading])
